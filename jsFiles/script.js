@@ -26,7 +26,6 @@ function preload() {
 
 function create() {
   this.add.image(400, 300, "backgroundImage");
-
   player = this.physics.add.sprite(400, 300, "knight");
   player.setScale(2);
   player.setCollideWorldBounds(true);
