@@ -26,26 +26,69 @@ function preload() {
 
 function create() {
   this.add.image(400, 300, "backgroundImage");
+
   player = this.physics.add.sprite(400, 300, "knight");
   player.setScale(2);
   player.setCollideWorldBounds(true);
+
+  this.anims.create({
+    key: "idle",
+    frames: this.anims.generateFrameNumbers("knight", { start: 0, end: 3 }),
+    frameRate: 2,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: "right",
+    frames: this.anims.generateFrameNumbers("knight", { start: 10, end: 18 }),
+    frameRate: 4,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: "up",
+    frames: this.anims.generateFrameNumbers("knight", { start: 20, end: 28 }),
+    frameRate: 4,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: "left",
+    frames: this.anims.generateFrameNumbers("knight", { start: 30, end: 38 }),
+    frameRate: 4,
+    repeat: -1,
+  });
+
+  this.anims.create({
+    key: "down",
+    frames: this.anims.generateFrameNumbers("knight", { start: 40, end: 48 }),
+    frameRate: 4,
+    repeat: -1,
+  });
+
   controls = this.input.keyboard.createCursorKeys();
 }
 let speed = 100;
 function update() {
   if (controls.left.isDown) {
     player.setVelocityX(-speed);
+    player.setVelocityY(0);
+    player.anims.play("left", true);
   } else if (controls.right.isDown) {
     player.setVelocityX(speed);
-  } else {
-    player.setVelocityX(0);
-  }
-
-  if (controls.up.isDown) {
+    player.setVelocityY(0);
+    player.anims.play("right", true);
+  } else if (controls.up.isDown) {
     player.setVelocityY(-speed);
+    player.setVelocityX(0);
+    player.anims.play("up", true);
   } else if (controls.down.isDown) {
     player.setVelocityY(speed);
+    player.setVelocityX(0);
+    player.anims.play("down", true);
   } else {
+    player.setVelocityX(0);
     player.setVelocityY(0);
+    player.anims.play("idle", true);
   }
 }
