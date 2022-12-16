@@ -67,48 +67,32 @@ function create() {
 
   controls = this.input.keyboard.createCursorKeys();
 }
+
 let speed = 100;
 function update() {
   if (controls.left.isDown) {
     player.setVelocityX(-speed);
     player.setVelocityY(0);
     player.anims.play("left", true);
+
   } else if (controls.right.isDown) {
     player.setVelocityX(speed);
     player.setVelocityY(0);
     player.anims.play("right", true);
+
   } else if (controls.up.isDown) {
     player.setVelocityY(-speed);
     player.setVelocityX(0);
     player.anims.play("up", true);
+    
   } else if (controls.down.isDown) {
     player.setVelocityY(speed);
     player.setVelocityX(0);
     player.anims.play("down", true);
+    
   } else {
     player.setVelocityX(0);
     player.setVelocityY(0);
     player.anims.play("idle", true);
-  player = this.physics.add.sprite(400, 300, "knight");
-  player.setScale(2);
-  player.setCollideWorldBounds(true);
-  controls = this.input.keyboard.createCursorKeys();
-}
-let speed = 100;
-function update() {
-  if (controls.left.isDown) {
-    player.setVelocityX(-speed);
-  } else if (controls.right.isDown) {
-    player.setVelocityX(speed);
-  } else {
-    player.setVelocityX(0);
-  }
-
-  if (controls.up.isDown) {
-    player.setVelocityY(-speed);
-  } else if (controls.down.isDown) {
-    player.setVelocityY(speed);
-  } else {
-    player.setVelocityY(0);
   }
 }
