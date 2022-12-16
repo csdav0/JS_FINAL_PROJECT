@@ -26,7 +26,6 @@ function preload() {
 
 function create() {
   this.add.image(400, 300, "backgroundImage");
-
   player = this.physics.add.sprite(400, 300, "knight");
   player.setScale(2);
   player.setCollideWorldBounds(true);
@@ -90,5 +89,26 @@ function update() {
     player.setVelocityX(0);
     player.setVelocityY(0);
     player.anims.play("idle", true);
+  player = this.physics.add.sprite(400, 300, "knight");
+  player.setScale(2);
+  player.setCollideWorldBounds(true);
+  controls = this.input.keyboard.createCursorKeys();
+}
+let speed = 100;
+function update() {
+  if (controls.left.isDown) {
+    player.setVelocityX(-speed);
+  } else if (controls.right.isDown) {
+    player.setVelocityX(speed);
+  } else {
+    player.setVelocityX(0);
+  }
+
+  if (controls.up.isDown) {
+    player.setVelocityY(-speed);
+  } else if (controls.down.isDown) {
+    player.setVelocityY(speed);
+  } else {
+    player.setVelocityY(0);
   }
 }
