@@ -9,7 +9,7 @@
 6. [Presentation Link](#Presentation-Link)
 
 ## Project Setup 
-- npm run install (to download all the packages)
+- npm install (to download all the packages)
 - npm run start (to run the game into your browser)
 
 ## Project Description 
