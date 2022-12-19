@@ -89,6 +89,7 @@ export default class Player {
     });
 
     this.sprite = scene.physics.add.sprite(x, y, "knight", 0).setScale(2);
+    this.sprite.body.setSize(22, 14, 10, 18);
     this.controls = scene.input.keyboard.addKeys("W,A,S,D,F,SPACE");
     this.mouse = scene.input.activePointer;
   }
@@ -116,7 +117,8 @@ export default class Player {
     if (controls.A.isDown) {
       sprite.body.setVelocityX(-playerSpeed);
       sprite.setFlipX(true);
-    } else if (controls.D.isDown) {
+    }
+    if (controls.D.isDown) {
       sprite.body.setVelocityX(playerSpeed);
       sprite.setFlipX(false);
     }
@@ -186,5 +188,9 @@ export default class Player {
 
     //if you die
     //   player.anims.play("die-face-down", false);
+  }
+
+  destroy() {
+    this.sprite.destroy();
   }
 }
