@@ -1,5 +1,10 @@
-/* Player class needs the scene it's in, it's x, y location, and the camera object from scene */
+import StateMachine from "./StateMachine.js";
+import AttackingState from "./AttackingState.js";
+import IdleState from "./IdleState.js";
+import MovingState from "./MovingState.js";
+import RollingState from "./RollingState.js";
 
+/* Player class needs the scene it's in, it's x, y location, and the camera object from scene */
 export default class Player {
   constructor(scene, x, y, camera) {
     this.scene = scene;
@@ -54,6 +59,7 @@ export default class Player {
     anims.create({
       key: "walk-right",
       frames: anims.generateFrameNumbers("knight", { start: 10, end: 17 }),
+      repeat: -1,
       frameRate: movementFrames,
     });
 
@@ -90,48 +96,29 @@ export default class Player {
 
     this.sprite = scene.physics.add.sprite(x, y, "knight", 0).setScale(2);
     this.sprite.body.setSize(22, 14, 10, 18);
+    this.sprite.direction = "right";
+    this.sprite.attacking = false;
+    this.sprite.rolling = false;
+    this.sprite.moving = false;
     this.controls = scene.input.keyboard.addKeys("W,A,S,D,F,SPACE");
     this.mouse = scene.input.activePointer;
+
+    this.stateMachine = new StateMachine(
+      "idle",
+      {
+        idle: new IdleState(),
+        attacking: new AttackingState(),
+        rolling: new RollingState(),
+        moving: new MovingState(),
+      },
+      [this.scene, this.sprite]
+    );
   }
   update() {
-    const controls = this.controls;
-    let mouse = this.mouse;
-
     //update mouse.worldX and mouse.worldY when the camera moves
-    mouse.updateWorldPoint(this.camera);
+    this.mouse.updateWorldPoint(this.camera);
 
-    const sprite = this.sprite;
-    const playerSpeed = 160;
-    const rollVelocity = playerSpeed * 0.5;
-    const previousVelocity = sprite.body.velocity.clone();
-
-    //X Delta is positive if the mouse is further right on the screen than the knight
-    const mouseAndSpriteXDelta = mouse.worldX - sprite.x;
-    //Y Delta is positive if the mouse is further left on the screen than the knight
-    const mouseAndSpriteYDelta = mouse.worldY - sprite.y;
-
-    sprite.body.setVelocity(0);
-
-    // movement
-    // horizonal is prioritized over vertical
-    if (controls.A.isDown) {
-      sprite.body.setVelocityX(-playerSpeed);
-      sprite.setFlipX(true);
-    }
-    if (controls.D.isDown) {
-      sprite.body.setVelocityX(playerSpeed);
-      sprite.setFlipX(false);
-    }
-
-    // Vertical movement
-    else if (controls.W.isDown) {
-      sprite.body.setVelocityY(-playerSpeed);
-    } else if (controls.S.isDown) {
-      sprite.body.setVelocityY(playerSpeed);
-    }
-
-    // normalize sets diagonal movement to the same playerSpeed as up, down, left, and right
-    sprite.body.velocity.normalize().scale(playerSpeed);
+    //In order to make the knight move smoothly, you can either roll, move, or attack
 
     /* Animations priority
     Attacking
@@ -139,52 +126,7 @@ export default class Player {
     General Movement
     */
 
-    // attacking based on mouse location compared to knight
-    if (mouse.isDown) {
-      //moving left causes setFlipX to be true, we need to setLipX to false anytime we attack, since our attacks are based on X,Y
-      sprite.setFlipX(false);
-      if (mouseAndSpriteXDelta > 0) {
-        if (mouseAndSpriteXDelta > mouseAndSpriteYDelta) {
-          sprite.anims.play("attack-right", true);
-        } else {
-          sprite.anims.play("attack-down", true);
-        }
-      } else {
-        if (mouseAndSpriteXDelta < mouseAndSpriteYDelta) {
-          sprite.anims.play("attack-left", true);
-        } else {
-          sprite.anims.play("attack-up", true);
-        }
-      }
-    }
-
-    //rolling
-    else if (controls.SPACE.isDown) {
-      sprite.anims.play("roll", true);
-      if (controls.D.isDown) {
-        sprite.setVelocityX(playerSpeed + rollVelocity);
-      } else if (controls.A.isDown) {
-        sprite.setVelocityX(-playerSpeed - rollVelocity);
-      } else if (controls.S.isDown) {
-        sprite.setVelocityY(playerSpeed + rollVelocity);
-      } else if (controls.W.isDown) {
-        sprite.setVelocityY(-playerSpeed - rollVelocity);
-      }
-    }
-    // Update the movement animation last
-    else if (controls.A.isDown || controls.D.isDown) {
-      sprite.anims.play("walk-right", true);
-    } else if (controls.W.isDown) {
-      sprite.anims.play("walk-up", true);
-    } else if (controls.S.isDown) {
-      sprite.anims.play("walk-down", true);
-    } else {
-      sprite.anims.stop();
-      // Idle frame
-      previousVelocity.x < 0
-        ? sprite.setTexture("knight", 210)
-        : sprite.setTexture("knight", 200);
-    }
+    this.stateMachine.step();
 
     //if you die
     //   player.anims.play("die-face-down", false);
