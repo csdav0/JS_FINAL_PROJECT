@@ -1,18 +1,20 @@
-import Scene from "./canvas_scene.js";
+import DungeonScene from "./dungeon-gen.js";
 
 const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
-  backgroundColor: "#000000",
-  parent: "game-container",
+  backgroundColor: "#000",
+  parent: "container",
   pixelArt: true,
-  scene: Scene,
+  scene: DungeonScene,
   physics: {
     default: "arcade",
     arcade: {
       gravity: { y: 0 },
+      debug: false,
     },
   },
 };
+
 const game = new Phaser.Game(config);
