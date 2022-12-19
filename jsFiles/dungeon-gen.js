@@ -1,7 +1,7 @@
 import TILES from "./tile-mapper.js";
 import Player from "./player.js";
 import FogOfWar from "./fog-of-war.js";
-
+import Enemy from "./enemy.js";
 export default class DungeonScene extends Phaser.Scene {
   constructor() {
     super();
@@ -18,9 +18,9 @@ export default class DungeonScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.spritesheet("spider", "assets/spritesheets/32bit-knight.png", {
-      frameWidth: 32,
-      frameHeight: 32,
+    this.load.spritesheet("spider", "assets/spritesheets/spider_preview.png", {
+      frameWidth: 64,
+      frameHeight: 64,
     });
   }
 
@@ -28,7 +28,7 @@ export default class DungeonScene extends Phaser.Scene {
     this.level++;
     this.hasPlayerReachedStairs = false;
     const music = this.sound.add("dungeon-main", { loop: true });
-    music.play();
+    // music.play();
 
     this.dungeon = new Dungeon({
       width: 40,
@@ -121,6 +121,18 @@ export default class DungeonScene extends Phaser.Scene {
       rooms.length * 0.9
     );
 
+    // enemy creation
+    const enemyRoom = spawnRoom;
+    const enemyPositionX = map.tileToWorldX(enemyRoom.centerX + 2);
+    const enemyPositionY = map.tileToWorldY(enemyRoom.centerY + 2);
+    this.enemy = new Enemy(this, enemyPositionX, enemyPositionY);
+
+    //collisions
+    this.physics.add.collider(this.enemy.sprite, this.groundLayer);
+    this.physics.add.collider(this.enemy.sprite, this.worldLayer);
+
+
+
     this.worldLayer.putTileAt(
       TILES.stairsDown,
       goalRoom.centerX,
@@ -137,6 +149,8 @@ export default class DungeonScene extends Phaser.Scene {
         const x = Phaser.Math.Between(room.left + 2, room.right - 2);
         const y = Phaser.Math.Between(room.top + 2, room.bottom - 2);
         this.worldLayer.putTileAt(TILES.pot, x, y);
+        this.worldLayer.putTileAt(this.enemy, room.centerX + 1, room.centerY);
+
       } else {
         //25% of either half column or brazier
         if (room.height >= 5) {
@@ -167,6 +181,8 @@ export default class DungeonScene extends Phaser.Scene {
     this.physics.add.collider(this.player.sprite, this.groundLayer);
     //worldlayer
     this.physics.add.collider(this.player.sprite, this.worldLayer);
+    // collision between enemy and a player
+    this.physics.add.collider(this.enemy.sprite, this.player.sprite);
 
     //initialize camera and set bounds and assign to follow player
 
