@@ -19,7 +19,7 @@
 ## Team Members
 
 - Bryce Meadors [LinkedIn](https://www.linkedin.com/in/bryce-meadors-a13923229/)
-- Cameron Davis [LinkedIn]()
+- Cameron Davis [LinkedIn](https://www.linkedin.com/in/cameron-davis-772333226/)
 - Rupesh Ghimire [LinkedIn](https://www.linkedin.com/in/rupeshghimirey/)
 
 ## User Stories
