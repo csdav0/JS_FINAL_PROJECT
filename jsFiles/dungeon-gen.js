@@ -22,6 +22,10 @@ export default class DungeonScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
+    this.load.spritesheet("spider", "assets/spritesheets/32bit-knight.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
   }
 
   create() {
