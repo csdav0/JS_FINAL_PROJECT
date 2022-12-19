@@ -1,19 +1,17 @@
-html,
-body,
-#game-container {
+
+#container {
   margin: 0;
   padding: 0;
 }
 
-#game-container {
+#container {
   min-width: 100vw;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #000000;
 }
 
-#game-container>canvas {
+#container>canvas {
   border-radius: 5px;
 }
