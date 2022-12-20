@@ -1,8 +1,9 @@
+
 export default class Enemy {
     constructor(scene, x, y) {
         this.scene = scene;
         const anims = scene.anims;
-        const movementFrames = 12;
+        const movementFrames = 16;
 
         anims.create({
             key: "sit-idle",
@@ -18,6 +19,22 @@ export default class Enemy {
     }
 
     update() {
-        this.sprite.anims.play("sit-idle",true);
+
+        // cursors = this.input.keyboard.createCursorKeys();
+        const controls = this.controls;
+        let mouse = this.mouse;
+        const sprite = this.sprite;
+        const enemySpeed = 160;
+
+
+        sprite.anims.play("sit-idle", true);
+        sprite.body.setVelocity(-100);
+
+
+        // if (controls.up.isDown) {
+        //     this.sprite.body.setVelocityY(-100);
+        // } else if (controls.down.isDown) {
+        //     this.sprite.body.setVelocityY(100);
+        // }
     }
 }
