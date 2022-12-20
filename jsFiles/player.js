@@ -95,11 +95,8 @@ export default class Player {
     });
 
     this.sprite = scene.physics.add.sprite(x, y, "knight", 0).setScale(2);
-    this.sprite.body.setSize(22, 14, 10, 18);
+    this.sprite.body.setSize(17, 10, 15, 22);
     this.sprite.direction = "right";
-    this.sprite.attacking = false;
-    this.sprite.rolling = false;
-    this.sprite.moving = false;
     this.controls = scene.input.keyboard.addKeys("W,A,S,D,F,SPACE");
     this.mouse = scene.input.activePointer;
 

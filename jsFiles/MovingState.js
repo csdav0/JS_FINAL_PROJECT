@@ -33,11 +33,9 @@ export default class MovingState extends State {
     if (this.controls.A.isDown) {
       sprite.body.setVelocityX(-playerSpeed);
       sprite.direction = "left";
-      sprite.setFlipX(true);
     } else if (this.controls.D.isDown) {
       sprite.body.setVelocityX(playerSpeed);
       sprite.direction = "right";
-      sprite.setFlipX(false);
     }
 
     // Vertical movement

@@ -3,11 +3,11 @@ export default class IdleState extends State {
   enter(scene, sprite) {
     const previousVelocity = sprite.body.velocity.clone();
     sprite.body.setVelocity(0);
-    sprite.anims.stop();
     // Idle frame
     previousVelocity.x < 0
       ? sprite.setTexture("knight", 210)
       : sprite.setTexture("knight", 200);
+    sprite.anims.stop();
   }
 
   execute(scene, sprite) {
