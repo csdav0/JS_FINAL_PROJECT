@@ -1,4 +1,5 @@
 
+
 export default class Enemy {
     constructor(scene, x, y) {
         this.scene = scene;
@@ -29,7 +30,6 @@ export default class Enemy {
 
         sprite.anims.play("sit-idle", true);
         sprite.body.setVelocity(-100);
-
 
         // if (controls.up.isDown) {
         //     this.sprite.body.setVelocityY(-100);
