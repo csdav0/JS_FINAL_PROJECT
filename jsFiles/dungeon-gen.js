@@ -30,6 +30,8 @@ export default class DungeonScene extends Phaser.Scene {
     const music = this.sound.add("dungeon-main", { loop: true });
     // music.play();
 
+
+
     this.dungeon = new Dungeon({
       width: 40,
       height: 40,
@@ -161,14 +163,15 @@ export default class DungeonScene extends Phaser.Scene {
 
     remainderRooms.forEach((room) => {
       let randomizer = Math.random();
+
       if (randomizer <= 0.99) {
         const enemyPositionX = map.tileToWorldX(room.centerX);
         const enemyPositionY = map.tileToWorldY(room.centerY);
         this.enemy = new Enemy(this, enemyPositionX, enemyPositionY);
+
         this.physics.add.collider(this.enemy.sprite, this.groundLayer);
         this.physics.add.collider(this.enemy.sprite, this.worldLayer);
         this.physics.add.collider(this.enemy.sprite, this.player.sprite);
-
       }
       if (randomizer <= 0.12) {
         //25% chance of chest
@@ -194,10 +197,6 @@ export default class DungeonScene extends Phaser.Scene {
         }
       }
     });
-
-    this.physics.add.collider(this.enemy.sprite, this.groundLayer);
-    this.physics.add.collider(this.enemy.sprite, this.worldLayer);
-    this.physics.add.collider(this.enemy.sprite, this.player.sprite);
 
     this.groundLayer.setCollisionByExclusion([-1, 14]);
     this.worldLayer.setCollisionByExclusion([-1, 57]);
