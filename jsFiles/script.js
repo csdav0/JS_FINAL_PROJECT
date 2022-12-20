@@ -1,24 +1,5 @@
-import DungeonScene from "./dungeon-gen.js";
-import StartScene from "./start-scene.js";
-
-// const config = {
-//   type: Phaser.AUTO,
-//   width: 800,
-//   height: 600,
-//   backgroundColor: "#000",
-//   parent: "container",
-//   pixelArt: true,
-//   scene: DungeonScene,
-//   physics: {
-//     default: "arcade",
-//     arcade: {
-//       gravity: { y: 0 },
-//       debug: false,
-//     },
-//   },
-// };
-
-// const game = new Phaser.Game(config);
+import StartScene from "./Scenes/start-scene.js";
+import TitleScene from "./Scenes/title-scene.js";
 
 const config = {
   type: Phaser.AUTO,
@@ -27,7 +8,7 @@ const config = {
   backgroundColor: "#000",
   parent: "container",
   pixelArt: true,
-  scene: StartScene,
+  scene: [TitleScene, StartScene],
   physics: {
     default: "arcade",
     arcade: {
