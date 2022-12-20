@@ -33,5 +33,10 @@ export default class IdleState extends State {
       this.stateMachine.transition("attacking");
       return;
     }
+
+    if (this.controls.F.isDown) {
+      this.stateMachine.transition("dead");
+      return;
+    }
   }
 }
