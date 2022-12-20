@@ -45,6 +45,8 @@ export default class DungeonScene extends Phaser.Scene {
       maxRooms: 7,
     });
 
+
+
     //create blank map
     const map = this.make.tilemap({
       tileWidth: 48,
@@ -125,55 +127,7 @@ export default class DungeonScene extends Phaser.Scene {
       rooms.length * 0.9
     );
 
-    // enemy creation
-    const enemyRoom = spawnRoom;
-    const enemyPositionX = map.tileToWorldX(enemyRoom.centerX + 2);
-    const enemyPositionY = map.tileToWorldY(enemyRoom.centerY + 2);
-    this.enemy = new Enemy(this, enemyPositionX, enemyPositionY);
-
-    //collisions
-    this.physics.add.collider(this.enemy.sprite, this.groundLayer);
-    this.physics.add.collider(this.enemy.sprite, this.worldLayer);
-
-
-
-    this.worldLayer.putTileAt(
-      TILES.stairsDown,
-      goalRoom.centerX,
-      goalRoom.centerY
-    );
-
-    remainderRooms.forEach((room) => {
-      const randomizer = Math.random();
-      if (randomizer <= 0.12) {
-        //25% chance of chest
-        this.worldLayer.putTileAt(TILES.chest, room.centerX, room.centerY);
-      } else if (randomizer <= 0.5) {
-        //50% chance of pot
-        const x = Phaser.Math.Between(room.left + 2, room.right - 2);
-        const y = Phaser.Math.Between(room.top + 2, room.bottom - 2);
-        this.worldLayer.putTileAt(TILES.pot, x, y);
-        this.worldLayer.putTileAt(this.enemy, room.centerX + 1, room.centerY);
-
-      } else {
-        //25% of either half column or brazier
-        if (room.height >= 5) {
-          const x = Phaser.Math.Between(room.left + 2, room.right - 2);
-          const y = Phaser.Math.Between(room.top + 2, room.bottom - 2);
-          this.worldLayer.putTileAt(TILES.halfColumn, x, y);
-          this.worldLayer.putTileAt(TILES.halfColumn, x + 1, y + 1);
-          // this.worldLayer.putTileAt(TILES.halfColumn, x, y);
-        } else {
-          const x = Phaser.Math.Between(room.left + 2, room.right - 2);
-          const y = Phaser.Math.Between(room.top + 2, room.bottom - 2);
-          this.worldLayer.putTileAt(TILES.brazier, x, y);
-        }
-      }
-    });
-
-    this.groundLayer.setCollisionByExclusion([-1, 14]);
-    this.worldLayer.setCollisionByExclusion([-1, 57]);
-
+    // player creation
     const camera = this.cameras.main;
     //place player in first room
     const playerRoom = spawnRoom;
@@ -186,12 +140,72 @@ export default class DungeonScene extends Phaser.Scene {
     //worldlayer
     this.physics.add.collider(this.player.sprite, this.worldLayer);
     // collision between enemy and a player
-    this.physics.add.collider(this.enemy.sprite, this.player.sprite);
 
     //initialize camera and set bounds and assign to follow player
-
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     camera.startFollow(this.player.sprite);
+
+
+    // enemy creation
+    // const enemyRoom = spawnRoom;
+    // let enemyPositionX = map.tileToWorldX(enemyRoom.centerX + 2);
+    // let enemyPositionY = map.tileToWorldY(enemyRoom.centerY -1);
+    // this.enemy = new Enemy(this, enemyPositionX, enemyPositionY);
+
+    // //collisions
+    // this.physics.add.collider(this.enemy.sprite, this.groundLayer);
+    // this.physics.add.collider(this.enemy.sprite, this.worldLayer);
+    // this.physics.add.collider(this.enemy.sprite, this.player.sprite);
+
+    this.worldLayer.putTileAt(
+      TILES.stairsDown,
+      goalRoom.centerX,
+      goalRoom.centerY
+    );
+
+    remainderRooms.forEach((room) => {
+      let randomizer = Math.random();
+      if (randomizer <= 0.99) {
+        const enemyPositionX = map.tileToWorldX(room.centerX);
+        const enemyPositionY = map.tileToWorldY(room.centerY);
+        this.enemy = new Enemy(this, enemyPositionX, enemyPositionY);
+        this.physics.add.collider(this.enemy.sprite, this.groundLayer);
+        this.physics.add.collider(this.enemy.sprite, this.worldLayer);
+        this.physics.add.collider(this.enemy.sprite, this.player.sprite);
+
+      }
+      if (randomizer <= 0.12) {
+        //25% chance of chest
+        this.worldLayer.putTileAt(TILES.chest, room.centerX, room.centerY);
+      } else if (randomizer <= 0.5) {
+        //50% chance of pot
+        const x = Phaser.Math.Between(room.left + 2, room.right - 2);
+        const y = Phaser.Math.Between(room.top + 2, room.bottom - 2);
+        this.worldLayer.putTileAt(TILES.pot, x, y);
+
+
+      } else {
+        //25% of either half column or brazier
+        if (room.height >= 5) {
+          const x = Phaser.Math.Between(room.left + 2, room.right - 2);
+          const y = Phaser.Math.Between(room.top + 2, room.bottom - 2);
+          this.worldLayer.putTileAt(TILES.halfColumn, x, y);
+          this.worldLayer.putTileAt(TILES.halfColumn, x + 1, y + 1);
+        } else {
+          const x = Phaser.Math.Between(room.left + 2, room.right - 2);
+          const y = Phaser.Math.Between(room.top + 2, room.bottom - 2);
+          this.worldLayer.putTileAt(TILES.brazier, x, y);
+        }
+      }
+    });
+
+    this.physics.add.collider(this.enemy.sprite, this.groundLayer);
+    this.physics.add.collider(this.enemy.sprite, this.worldLayer);
+    this.physics.add.collider(this.enemy.sprite, this.player.sprite);
+
+    this.groundLayer.setCollisionByExclusion([-1, 14]);
+    this.worldLayer.setCollisionByExclusion([-1, 57]);
+
 
     //instructions text
     this.add
@@ -205,6 +219,7 @@ export default class DungeonScene extends Phaser.Scene {
 
   update() {
     this.player.update();
+    this.enemy.update();
 
     //find player's room using helper method from dungeon API that converts dungeon XY (grid units) to corresponding room instance
     const playerTileX = this.groundLayer.worldToTileX(this.player.sprite.x);
