@@ -1,10 +1,10 @@
 
-
-export default class Enemy {
+export default class Enemy{
     constructor(scene, x, y) {
         this.scene = scene;
         const anims = scene.anims;
         const movementFrames = 16;
+        this.isDead = false
 
         anims.create({
             key: "sit-idle",
@@ -17,24 +17,67 @@ export default class Enemy {
         });
 
         this.sprite = scene.physics.add.sprite(x, y, "spider");
+        this.speed = 20;
+
+        let dir = Math.floor(Math.random() * 4)
+        console.log(dir);
+        if (dir === 0) {
+            // up
+            this.sprite.body.setVelocity(0, -this.speed)
+            this.sprite.anims.play("sit-idle");
+        } else if (dir === 1) {
+            // left
+            this.sprite.body.setVelocity(-this.speed, 0)
+            this.sprite.anims.play("sit-idle");
+        }
+        else if (dir === 2) {
+            // down
+            this.sprite.body.setVelocity(0, this.speed)
+            this.sprite.anims.play("sit-idle");
+        }
+        else {
+            this.sprite.body.setVelocity(this.speed, 0)
+            this.sprite.anims.play("sit-idle");
+        }
+    }
+
+    explode(){
+        if (!this.isDead){
+            this.isDead = true
+            this.destroy()
+            // console.log('entity explode');
+        }
     }
 
     update() {
-
-        // cursors = this.input.keyboard.createCursorKeys();
-        const controls = this.controls;
-        let mouse = this.mouse;
         const sprite = this.sprite;
-        const enemySpeed = 160;
-
-
         sprite.anims.play("sit-idle", true);
-        sprite.body.setVelocity(-100);
+        const { speed } = this;
+        const enemyBlocked = sprite.body.blocked;
+        console.log(enemyBlocked);
+        if (enemyBlocked.down || enemyBlocked.up || enemyBlocked.left || enemyBlocked.right) {
+            let possibleDirections = []
+            for (const direction in enemyBlocked) {
+                possibleDirections.push(direction)
+            }
+            const newDirection = possibleDirections[Math.floor(Math.random() * 4) + 1]
 
-        // if (controls.up.isDown) {
-        //     this.sprite.body.setVelocityY(-100);
-        // } else if (controls.down.isDown) {
-        //     this.sprite.body.setVelocityY(100);
-        // }
+            if (newDirection === 'up') {
+                this.sprite.body.setVelocity(0, -this.speed)
+                this.sprite.anims.play("sit-idle");
+            } else if (newDirection === 'left') {
+                this.sprite.body.setVelocity(-this.speed, 0)
+                this.sprite.anims.play("sit-idle");
+            } else if (newDirection === 'down') {
+                this.sprite.body.setVelocity(0, this.speed)
+                this.sprite.anims.play("sit-idle");
+            } else if (newDirection === 'right') {
+                this.sprite.body.setVelocity(0, -this.speed)
+                this.sprite.anims.play("sit-idle");
+            } else if(newDirection === 'none'){
+                this.sprite.body.setVelocity(0, this.speed);
+                this.sprite.anims.play("sit-idle");
+            }
+        }
     }
 }
