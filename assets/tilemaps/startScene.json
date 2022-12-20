@@ -228,9 +228,56 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":6,
+         "name":"EnemySpawn",
+         "objects":[
+                {
+                 "class":"",
+                 "height":0,
+                 "id":3,
+                 "name":"enemy3",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":1202,
+                 "y":1146
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":4,
+                 "name":"enemy2",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":1490,
+                 "y":552
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":5,
+                 "name":"enemy1",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":526,
+                 "y":572
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":6,
- "nextobjectid":2,
+ "nextlayerid":7,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.2",
