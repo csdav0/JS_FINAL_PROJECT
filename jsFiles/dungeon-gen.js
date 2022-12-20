@@ -10,7 +10,11 @@ export default class DungeonScene extends Phaser.Scene {
 
   preload() {
     //load music
-    this.load.audio("dungeon-main", "assets/audio/Alone.mp3");
+    this.load.audio("dungeon-main", [
+      "assets/audio/Alone.mp3",
+      "assets/audio/7th Realm.mp3",
+      "assets/audio/Attack4.mp3",
+    ]);
     //load tile images
     this.load.image("tiles", "assets/basictiles_og_scaled48.png");
     //load character sprite
