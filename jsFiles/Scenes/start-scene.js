@@ -1,4 +1,5 @@
 import Player from "../Player/player.js";
+import Enemy from "../enemy.js";
 let isGameOver;
 let music;
 export default class StartScene extends Phaser.Scene {
@@ -13,6 +14,10 @@ export default class StartScene extends Phaser.Scene {
     this.load.spritesheet("knight", "assets/spritesheets/32bit-knight.png", {
       frameWidth: 32,
       frameHeight: 32,
+    });
+    this.load.spritesheet("spider", "assets/spritesheets/spider_preview.png", {
+      frameWidth: 64,
+      frameHeight: 64,
     });
   }
 
@@ -48,6 +53,31 @@ export default class StartScene extends Phaser.Scene {
     //watch for collisions
     this.physics.add.collider(this.player.sprite, aboveLayer);
     this.physics.add.collider(this.player.sprite, worldLayer);
+    
+    // adds enemy
+    const enemySpawnPoint1 = map.findObject(
+      "EnemySpawn",
+      (obj) => obj.name === "enemy1"
+    );
+    const enemySpawnPoint2 = map.findObject(
+      "EnemySpawn",
+      (obj) => obj.name === "enemy2"
+    );
+    const enemySpawnPoint3 = map.findObject(
+      "EnemySpawn",
+      (obj) => obj.name === "enemy3"
+    );
+    this.enemy1 = new Enemy(this,enemySpawnPoint1.x,enemySpawnPoint1.y);
+    this.enemy2 = new Enemy(this,enemySpawnPoint2.x,enemySpawnPoint2.y);
+    this.enemy3 = new Enemy(this,enemySpawnPoint3.x,enemySpawnPoint3.y);
+    // enemy collisions with above layer
+    this.physics.add.collider(this.enemy1.sprite, aboveLayer);
+    this.physics.add.collider(this.enemy2.sprite, aboveLayer);
+    this.physics.add.collider(this.enemy3.sprite, aboveLayer);
+    // enemy collisions with world layer
+    this.physics.add.collider(this.enemy1.sprite, worldLayer);
+    this.physics.add.collider(this.enemy2.sprite, worldLayer);
+    this.physics.add.collider(this.enemy3.sprite, worldLayer);
 
     // how to play
     this.addControlsText(this);
@@ -63,6 +93,9 @@ export default class StartScene extends Phaser.Scene {
       return;
     }
     this.player.update();
+    this.enemy1.update();
+    this.enemy2.update();
+    this.enemy3.update();
   }
 
   gameOver() {
