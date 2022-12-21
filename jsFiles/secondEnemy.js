@@ -20,7 +20,7 @@ export default class SecondEnemy {
             key: "walk-left",
             frames: anims.generateFrameNumbers("skeleton",
                 {
-                    start: 28, end: 30
+                    start: 28, end: 33
                 }),
             repeat: -1,
             frameRate: movementFrames,
@@ -37,7 +37,7 @@ export default class SecondEnemy {
         } else if (dir === 1) {
             // left
             this.sprite.body.setVelocity(-this.speed, 0)
-            this.sprite.anims.play("sit-idle")
+            this.sprite.anims.play("walk-left")
         }
         else if (dir === 2) {
             // down
@@ -50,21 +50,14 @@ export default class SecondEnemy {
             this.sprite.anims.play("sit-idle")
         }
     }
-
-    explode(){
-        if (!this.isDead){
-            this.isDead = true
-            this.sprite.destroy()
-        }
-    }
-
     update() {
         const sprite = this.sprite;
         sprite.anims.play("sit-idle", true);
         const { speed } = this;
         const enemyBlocked = sprite.body.blocked;
-        console.log(enemyBlocked);
+        
         if (enemyBlocked.down || enemyBlocked.up || enemyBlocked.left || enemyBlocked.right) {
+
             let possibleDirections = []
             for (const direction in enemyBlocked) {
                 possibleDirections.push(direction)
@@ -73,19 +66,30 @@ export default class SecondEnemy {
             if (newDirection === 'up') {
                 this.sprite.body.setVelocity(0, -this.speed)
                 this.sprite.anims.play("sit-idle")
+
             } else if (newDirection === 'left') {
                 this.sprite.body.setVelocity(-this.speed, 0)
-                this.sprite.anims.play("sit-idle")
+                this.sprite.anims.play("walk-left")
+
             } else if (newDirection === 'down') {
                 this.sprite.body.setVelocity(0, this.speed)
                 this.sprite.anims.play("sit-idle")
+
             } else if (newDirection === 'right') {
                 this.sprite.body.setVelocity(0, -this.speed)
                 this.sprite.anims.play("sit-idle")
+
             } else if(newDirection === 'none'){
                 this.sprite.body.setVelocity(0, this.speed);
                 this.sprite.anims.play("sit-idle")
             }
+        }
+    }
+
+    explode(){
+        if (!this.isDead){
+            this.isDead = true
+            this.sprite.destroy()
         }
     }
 }
