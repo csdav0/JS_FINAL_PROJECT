@@ -286,7 +286,7 @@
         {
          "columns":8,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/..\/Downloads Folder\/Downloads\/basictiles_og_scaled48.png",
+         "image":"..\/tilesets\/basictiles_og_scaled48.png",
          "imageheight":720,
          "imagewidth":384,
          "margin":0,
@@ -1382,7 +1382,7 @@
         {
          "columns":12,
          "firstgid":121,
-         "image":"..\/..\/..\/..\/..\/..\/Downloads Folder\/Downloads\/things_og_scaled48.png",
+         "image":"..\/tilesets\/things_og_scaled48.png",
          "imageheight":384,
          "imagewidth":576,
          "margin":0,
@@ -2266,7 +2266,7 @@
          "tilewidth":48
         }],
  "tilewidth":48,
- "type":"firstLevel",
+ "type":"map",
  "version":"1.9",
  "width":40
 }

@@ -118,9 +118,11 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":316,
-                 "y":1604
+                 "x":402,
+                 "y":1626
                 }],
+         "offsetx":3.03030303030306,
+         "offsety":-15.1515151515152,
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -130,6 +132,7 @@
         {
          "draworder":"topdown",
          "id":4,
+         "locked":true,
          "name":"BossSpawn",
          "objects":[
                 {
@@ -160,7 +163,7 @@
         {
          "columns":8,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/..\/Downloads Folder\/Downloads\/basictiles_og_scaled48.png",
+         "image":"..\/tilesets\/basictiles_og_scaled48.png",
          "imageheight":720,
          "imagewidth":384,
          "margin":0,
@@ -680,7 +683,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":true
+                         "value":false
                         }]
                 }, 
                 {
@@ -1256,7 +1259,7 @@
         {
          "columns":12,
          "firstgid":121,
-         "image":"..\/..\/..\/..\/..\/..\/Downloads Folder\/Downloads\/things_og_scaled48.png",
+         "image":"..\/tilesets\/things_og_scaled48.png",
          "imageheight":384,
          "imagewidth":576,
          "margin":0,
@@ -2134,7 +2137,7 @@
          "tilewidth":48
         }],
  "tilewidth":48,
- "type":"secondLevel",
+ "type":"map",
  "version":"1.9",
  "width":40
 }

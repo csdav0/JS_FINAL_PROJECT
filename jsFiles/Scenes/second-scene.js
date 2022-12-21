@@ -1,11 +1,13 @@
 import Player from "../Player/player.js";
 
+let music;
 export default class SecondScene extends Phaser.Scene {
   constructor() {
     super("second");
   }
 
   preload() {
+    this.load.audio("boss_song", "assets/audio/Attack4.mp3");
     this.load.image("tiles", "assets/basictiles_og_scaled48.png");
     this.load.tilemapTiledJSON(
       "secondLevel",
@@ -18,6 +20,8 @@ export default class SecondScene extends Phaser.Scene {
   }
 
   create() {
+    music = music = this.sound.add("boss_song");
+    music.play();
     this.hasPlayerReachedStairs = false;
     const map = this.make.tilemap({ key: "secondLevel" });
 
@@ -26,9 +30,8 @@ export default class SecondScene extends Phaser.Scene {
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     const belowLayer = map.createLayer("Ground Layer", tileset, 0, 0);
     const worldLayer = map.createLayer("World Layer", tileset, 0, 0);
-    const aboveLayer = map.createLayer("Top Layer", tileset, 0, 0);
 
-    // aboveLayer.setCollisionByProperty({ collides: true });
+    belowLayer.setCollisionByProperty({ collides: true });
     worldLayer.setCollisionByProperty({ collides: true });
 
     const camera = this.cameras.main;
@@ -43,7 +46,7 @@ export default class SecondScene extends Phaser.Scene {
     camera.startFollow(this.player.sprite);
 
     //watch for collisions
-    this.physics.add.collider(this.player.sprite, aboveLayer);
+    this.physics.add.collider(this.player.sprite, belowLayer);
     this.physics.add.collider(this.player.sprite, worldLayer);
 
     //instructions text
@@ -55,40 +58,39 @@ export default class SecondScene extends Phaser.Scene {
       })
       .setScrollFactor(0);
 
-    // this.worldLayer.setTileLocationCallback(23, 32, 48, 48, () => {
-    //   this.worldLayer.setTileLocationCallback(6, 33, 48, 48, null);
-    //   this.hasPlayerReachedStairs = true;
-    //   const camera = this.cameras.main;
-    //   camera.fade(250, 0, 0, 0);
-    //   camera.once("camerafadeoutcomplete", () => {
-    //     this.ascendScene();
-    //   });
-    // });
+    worldLayer.setTileLocationCallback(6, 33, 1, 1, () => {
+      worldLayer.setTileLocationCallback(6, 33, 1, 1, null);
+      this.hasPlayerReachedStairs = true;
+      const camera = this.cameras.main;
+      music.stop();
+      camera.fade(250, 0, 0, 0);
+      camera.once("camerafadeoutcomplete", () => {
+        this.ascendScene();
+      });
+    });
 
-    // const debugGraphics = this.add.graphics().setAlpha(0.75);
-    // worldLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
-    // belowLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
-    // aboveLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
+    //this.setDebug(worldLayer, belowLayer);
   }
 
   ascendScene() {
-    this.scene.start("startScene");
+    this.scene.start("start");
   }
 
   update(time, delta) {
-    console.log("You are in the 2nd scene");
     this.player.update();
+  }
+
+  setDebug(worldLayer, belowLayer) {
+    const debugGraphics = this.add.graphics().setAlpha(0.75);
+    worldLayer.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    });
+    belowLayer.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    });
   }
 }
