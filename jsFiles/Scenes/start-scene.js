@@ -1,5 +1,4 @@
 import Player from "../Player/player.js";
-import SecondEnemy from "../secondEnemy.js";
 let isGameOver;
 let music;
 export default class StartScene extends Phaser.Scene {
@@ -14,11 +13,6 @@ export default class StartScene extends Phaser.Scene {
     this.load.spritesheet("knight", "assets/spritesheets/32bit-knight.png", {
       frameWidth: 32,
       frameHeight: 32,
-    });
-
-    this.load.spritesheet("skeleton", "assets/spritesheets/monsters.png", {
-      frameWidth: 16,
-      frameHeight: 16,
     });
   }
 
@@ -51,35 +45,6 @@ export default class StartScene extends Phaser.Scene {
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     camera.startFollow(this.player.sprite);
 
-    // second enemy
-    this.enemy = new SecondEnemy(this, 350, 400);
-    this.physics.add.collider(this.enemy.sprite, worldLayer);
-    this.physics.add.collider(this.enemy.sprite, aboveLayer);
-    this.physics.add.collider(this.enemy.sprite, this.player.sprite);
-
-    this.enemy4 = new SecondEnemy(this, 320, 350);
-    this.physics.add.collider(this.enemy4.sprite, worldLayer);
-    this.physics.add.collider(this.enemy4.sprite, aboveLayer);
-    this.physics.add.collider(this.enemy4.sprite, this.player.sprite);
-
-    // function handlePlayerEnemyCollision(player, enemy) {
-    //   enemy.explode();
-    // }
-
-    // this.physics.add.overlap(this.player, this.enemies, handlePlayerEnemyCollision(this.player,this.enemy))
-
-    // grouping enemies
-    // this.enemyGroup = this.physics.add.group();
-    // this.enemyGroup.add(this.enemy);
-    // this.enemyGroup.add(this.enemy4);
-
-
-    // this.physics.add.collider(enemyGroup,worldLayer);
-    // this.physics.add.collider(enemyGroup, aboveLayer);
-    // this.physics.add.collider(enemyGroup, this.player.sprite);
-
-
-
     //watch for collisions
     this.physics.add.collider(this.player.sprite, aboveLayer);
     this.physics.add.collider(this.player.sprite, worldLayer);
@@ -98,7 +63,6 @@ export default class StartScene extends Phaser.Scene {
       return;
     }
     this.player.update();
-    this.enemy.update();
   }
 
   gameOver() {
