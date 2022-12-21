@@ -45,7 +45,7 @@ export default class StartScene extends Phaser.Scene {
       "Spawn",
       (obj) => obj.name === "Spawn Point"
     );
-    this.player = new Player(this, 1048, 1555, camera);
+    this.player = new Player(this, spawnPoint.x, spawnPoint.y, camera);
 
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     camera.startFollow(this.player.sprite);
@@ -83,12 +83,13 @@ export default class StartScene extends Phaser.Scene {
     this.addControlsText(this);
 
     //debug graphics here
-    // this.showCollision(worldLayer, belowLayer, aboveLayer);
+    //this.showCollision(worldLayer, belowLayer, aboveLayer);
 
-    worldLayer.setTileLocationCallback(23, 32, 48, 48, () => {
-      worldLayer.setTileLocationCallback(23, 32, 48, 48, null);
+    worldLayer.setTileLocationCallback(23, 32, 1, 1, () => {
+      worldLayer.setTileLocationCallback(23, 32, 1, 1, null);
       this.hasPlayerReachedStairs = true;
       const camera = this.cameras.main;
+      music.stop();
       camera.fade(250, 0, 0, 0);
       camera.once("camerafadeoutcomplete", () => {
         this.descendToBoss();
