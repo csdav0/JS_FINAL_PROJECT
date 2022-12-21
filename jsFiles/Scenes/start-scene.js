@@ -53,7 +53,7 @@ export default class StartScene extends Phaser.Scene {
     //watch for collisions
     this.physics.add.collider(this.player.sprite, aboveLayer);
     this.physics.add.collider(this.player.sprite, worldLayer);
-    
+
     // adds enemy
     const enemySpawnPoint1 = map.findObject(
       "EnemySpawn",
@@ -67,9 +67,9 @@ export default class StartScene extends Phaser.Scene {
       "EnemySpawn",
       (obj) => obj.name === "enemy3"
     );
-    this.enemy1 = new Enemy(this,enemySpawnPoint1.x,enemySpawnPoint1.y);
-    this.enemy2 = new Enemy(this,enemySpawnPoint2.x,enemySpawnPoint2.y);
-    this.enemy3 = new Enemy(this,enemySpawnPoint3.x,enemySpawnPoint3.y);
+    this.enemy1 = new Enemy(this, enemySpawnPoint1.x, enemySpawnPoint1.y);
+    this.enemy2 = new Enemy(this, enemySpawnPoint2.x, enemySpawnPoint2.y);
+    this.enemy3 = new Enemy(this, enemySpawnPoint3.x, enemySpawnPoint3.y);
     // enemy collisions with above layer
     this.physics.add.collider(this.enemy1.sprite, aboveLayer);
     this.physics.add.collider(this.enemy2.sprite, aboveLayer);
@@ -84,6 +84,18 @@ export default class StartScene extends Phaser.Scene {
 
     //debug graphics here
     // this.showCollision(worldLayer, belowLayer, aboveLayer);
+
+    worldLayer.setTileLocationCallback(23, 32, 48, 48, () => {
+      worldLayer.setTileLocationCallback(23, 32, 48, 48, null);
+      this.hasPlayerReachedStairs = true;
+      // this.player.freeze();
+      const camera = this.cameras.main;
+      camera.fade(250, 0, 0, 0);
+      camera.once("camerafadeoutcomplete", () => {
+        // this.player.destroy();
+        this.descendToBoss();
+      });
+    });
   }
 
   update(time, delta) {
@@ -96,6 +108,10 @@ export default class StartScene extends Phaser.Scene {
     this.enemy1.update();
     this.enemy2.update();
     this.enemy3.update();
+  }
+
+  descendToBoss() {
+    this.scene.start("second-scene");
   }
 
   gameOver() {
