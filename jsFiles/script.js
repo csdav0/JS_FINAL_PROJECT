@@ -3,6 +3,7 @@ import TitleScene from "./Scenes/title-scene.js";
 import DungeonScene from "./Scenes/dungeon-gen.js";
 
 // Prodecurally generated map from library
+import SecondScene from "./second-scene.js";
 
 // const config = {
 //   type: Phaser.AUTO,
@@ -32,7 +33,7 @@ const config = {
   backgroundColor: "#000",
   parent: "container",
   pixelArt: true,
-  scene: [TitleScene, StartScene],
+  scene: [TitleScene, StartScene, SecondScene],
   physics: {
     default: "arcade",
     arcade: {
