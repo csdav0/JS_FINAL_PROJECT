@@ -7,8 +7,8 @@ export default class StartScene extends Phaser.Scene {
   }
   preload() {
     this.load.audio("level_music", "assets/audio/Alone.mp3");
-    this.load.image("tiles", "assets/basictiles_og_scaled48.png");
-    this.load.image("tiles2", "assets/things_og_scaled48.png");
+    this.load.image("tiles", "assets/tilesets/basictiles_og_scaled48.png");
+    this.load.image("tiles2", "assets/tilesets/things_og_scaled48.png");
     this.load.tilemapTiledJSON("map", "assets/tilemaps/startScene.json");
     this.load.spritesheet("knight", "assets/spritesheets/32bit-knight.png", {
       frameWidth: 32,
@@ -36,12 +36,12 @@ export default class StartScene extends Phaser.Scene {
     worldLayer.setCollisionByProperty({ collides: true });
 
     const camera = this.cameras.main;
-
     const spawnPoint = map.findObject(
       "Spawn",
       (obj) => obj.name === "Spawn Point"
     );
     this.player = new Player(this, spawnPoint.x, spawnPoint.y, camera);
+
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     camera.startFollow(this.player.sprite);
 
@@ -49,38 +49,11 @@ export default class StartScene extends Phaser.Scene {
     this.physics.add.collider(this.player.sprite, aboveLayer);
     this.physics.add.collider(this.player.sprite, worldLayer);
 
-    //instructions text
-    this.add
-      .text(
-        16,
-        16,
-        "WASD to move, Click to attack, Spacebar to roll, F to die and restart",
-        {
-          font: "18px monospace",
-          fill: "#ffffff",
-          padding: { x: 20, y: 10 },
-        }
-      )
-      .setScrollFactor(0);
+    // how to play
+    this.addControlsText(this);
 
     //debug graphics here
-
-    // const debugGraphics = this.add.graphics().setAlpha(0.75);
-    // worldLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
-    // belowLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
-    // aboveLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
+    // this.showCollision(worldLayer, belowLayer, aboveLayer);
   }
 
   update(time, delta) {
@@ -91,6 +64,7 @@ export default class StartScene extends Phaser.Scene {
     }
     this.player.update();
   }
+
   gameOver() {
     if (isGameOver) {
       return;
@@ -112,6 +86,40 @@ export default class StartScene extends Phaser.Scene {
   }
 
   restartGame() {
-    this.scene.restart();
+    this.scene.start("title");
+  }
+
+  addControlsText(scene) {
+    scene.add
+      .text(
+        16,
+        16,
+        "WASD to move, Click to attack, Spacebar to roll, F to die and restart",
+        {
+          font: "18px monospace",
+          fill: "#ffffff",
+          padding: { x: 20, y: 10 },
+        }
+      )
+      .setScrollFactor(0);
+  }
+
+  showCollision(worldLayer, belowLayer, aboveLayer) {
+    const debugGraphics = this.add.graphics().setAlpha(0.75);
+    worldLayer.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    });
+    belowLayer.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    });
+    aboveLayer.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    });
   }
 }

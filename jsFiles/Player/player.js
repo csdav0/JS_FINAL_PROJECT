@@ -10,15 +10,53 @@ export default class Player {
   constructor(scene, x, y, camera) {
     this.scene = scene;
     this.camera = camera;
-    const anims = scene.anims;
-    const attackFrames = 16;
-    const movementFrames = 16;
+    this.sprite = this.createKnight(scene, x, y);
+    this.controls = scene.input.keyboard.addKeys("W,A,S,D,F,SPACE");
+    this.mouse = scene.input.activePointer;
+    this.makeAnimations(scene.anims);
+    this.stateMachine = this.makeStateMachine();
+  }
 
+  update() {
+    //update mouse.worldX and mouse.worldY when the camera moves
+    this.mouse.updateWorldPoint(this.camera);
+    this.stateMachine.step();
+
+    if (this.stateMachine.state === "dead") {
+      this.sprite.anims.play("die-face-down", true);
+      return;
+    }
+  }
+
+  destroy() {
+    this.sprite.destroy();
+  }
+
+  makeStateMachine() {
+    return new StateMachine(
+      "idle",
+      {
+        idle: new IdleState(),
+        attacking: new AttackingState(),
+        rolling: new RollingState(),
+        moving: new MovingState(),
+        dead: new DeadState(),
+      },
+      [this.scene, this.sprite]
+    );
+  }
+
+  createKnight(scene, x, y) {
     this.sprite = scene.physics.add.sprite(x, y, "knight", 0).setScale(2);
     this.sprite.body.setSize(17, 10, 15, 22);
     this.sprite.direction = "right";
-    this.controls = scene.input.keyboard.addKeys("W,A,S,D,F,SPACE");
-    this.mouse = scene.input.activePointer;
+    return this.sprite;
+  }
+
+  makeAnimations(sceneAnims) {
+    const anims = sceneAnims;
+    const attackFrames = 16;
+    const movementFrames = 16;
     //attack anims
     anims.create({
       key: "attack-right",
@@ -98,31 +136,5 @@ export default class Player {
       }),
       frameRate: 4,
     });
-
-    this.stateMachine = new StateMachine(
-      "idle",
-      {
-        idle: new IdleState(),
-        attacking: new AttackingState(),
-        rolling: new RollingState(),
-        moving: new MovingState(),
-        dead: new DeadState(),
-      },
-      [this.scene, this.sprite]
-    );
-  }
-  update() {
-    //update mouse.worldX and mouse.worldY when the camera moves
-    this.mouse.updateWorldPoint(this.camera);
-    this.stateMachine.step();
-
-    if (this.stateMachine.state === "dead") {
-      this.sprite.anims.play("die-face-down", true);
-      return;
-    }
-  }
-
-  destroy() {
-    this.sprite.destroy();
   }
 }

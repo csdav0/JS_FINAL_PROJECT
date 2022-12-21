@@ -1,6 +1,6 @@
-import TILES from "./tile-mapper.js";
-import Player from "./player.js";
-import FogOfWar from "./fog-of-war.js";
+import TILES from "../WorldBuilding/tile-mapper.js";
+import Player from "../Player/player.js";
+import FogOfWar from "../WorldBuilding/fog-of-war.js";
 
 export default class DungeonScene extends Phaser.Scene {
   constructor() {
@@ -16,7 +16,7 @@ export default class DungeonScene extends Phaser.Scene {
       "assets/audio/Attack4.mp3",
     ]);
     //load tile images
-    this.load.image("tiles", "assets/basictiles_og_scaled48.png");
+    this.load.image("tiles", "assets/tilesets/basictiles_og_scaled48.png");
     //load character sprite
     this.load.spritesheet("knight", "assets/spritesheets/32bit-knight.png", {
       frameWidth: 32,
