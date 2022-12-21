@@ -65,7 +65,7 @@ export default class SecondScene extends Phaser.Scene {
 
     // bossEnemy collisions
     this.physics.add.collider(this.bossSpawn.sprite, worldLayer);
-    this.physics.add.collider(this.bossSpawn.sprite, aboveLayer);
+    this.physics.add.collider(this.bossSpawn.sprite, belowLayer);
   
 
     //instructions text
