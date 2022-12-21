@@ -45,7 +45,7 @@ export default class StartScene extends Phaser.Scene {
       "Spawn",
       (obj) => obj.name === "Spawn Point"
     );
-    this.player = new Player(this, spawnPoint.x, spawnPoint.y, camera);
+    this.player = new Player(this, 1048, 1555, camera);
 
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     camera.startFollow(this.player.sprite);
