@@ -1,9 +1,8 @@
 import StartScene from "./Scenes/start-scene.js";
 import TitleScene from "./Scenes/title-scene.js";
-import DungeonScene from "./Scenes/dungeon-gen.js";
+// import DungeonScene from "./Scenes/dungeon-gen.js";
 
-// Prodecurally generated map from library
-import SecondScene from "./second-scene.js";
+import SecondScene from "./Scenes/second-scene.js";
 
 // const config = {
 //   type: Phaser.AUTO,
