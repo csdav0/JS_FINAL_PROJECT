@@ -1,5 +1,6 @@
 import DungeonScene from "./dungeon-gen.js";
 import StartScene from "./start-scene.js";
+import SecondScene from "./second-scene.js";
 
 // const config = {
 //   type: Phaser.AUTO,
@@ -27,7 +28,7 @@ const config = {
   backgroundColor: "#000",
   parent: "container",
   pixelArt: true,
-  scene: StartScene,
+  scene: [StartScene, SecondScene],
   physics: {
     default: "arcade",
     arcade: {
