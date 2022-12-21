@@ -2134,7 +2134,7 @@
          "tilewidth":48
         }],
  "tilewidth":48,
- "type":"map",
+ "type":"secondLevel",
  "version":"1.9",
  "width":40
 }

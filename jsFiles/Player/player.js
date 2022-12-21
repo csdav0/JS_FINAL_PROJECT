@@ -18,6 +18,10 @@ export default class Player {
   }
 
   update() {
+    console.log(
+      `Player x pos: ${this.sprite.x} Player y pos : ${this.sprite.y}`
+    );
+
     //update mouse.worldX and mouse.worldY when the camera moves
     this.mouse.updateWorldPoint(this.camera);
     this.stateMachine.step();
