@@ -1,5 +1,8 @@
-import DungeonScene from "./dungeon-gen.js";
-import StartScene from "./start-scene.js";
+import StartScene from "./Scenes/start-scene.js";
+import TitleScene from "./Scenes/title-scene.js";
+import DungeonScene from "./Scenes/dungeon-gen.js";
+
+// Prodecurally generated map from library
 
 // const config = {
 //   type: Phaser.AUTO,
@@ -20,6 +23,8 @@ import StartScene from "./start-scene.js";
 
 // const game = new Phaser.Game(config);
 
+// Manually generated map
+
 const config = {
   type: Phaser.AUTO,
   width: 800,
@@ -27,7 +32,7 @@ const config = {
   backgroundColor: "#000",
   parent: "container",
   pixelArt: true,
-  scene: StartScene,
+  scene: [TitleScene, StartScene],
   physics: {
     default: "arcade",
     arcade: {

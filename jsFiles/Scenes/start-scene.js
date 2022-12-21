@@ -1,16 +1,20 @@
-import Player from "./player.js";
-import Enemy from "./enemy.js";
-
+import Player from "../Player/player.js";
+import Enemy from "../enemy.js";
+let isGameOver;
+let music;
 export default class StartScene extends Phaser.Scene {
+  constructor() {
+    super("start");
+  }
   preload() {
-    this.load.image("tiles", "assets/basictiles_og_scaled48.png");
-    this.load.image("tiles2", "assets/things_og_scaled48.png");
+    this.load.audio("level_music", "assets/audio/Alone.mp3");
+    this.load.image("tiles", "assets/tilesets/basictiles_og_scaled48.png");
+    this.load.image("tiles2", "assets/tilesets/things_og_scaled48.png");
     this.load.tilemapTiledJSON("map", "assets/tilemaps/startScene.json");
     this.load.spritesheet("knight", "assets/spritesheets/32bit-knight.png", {
       frameWidth: 32,
       frameHeight: 32,
     });
-    // enemy
     this.load.spritesheet("spider", "assets/spritesheets/spider_preview.png", {
       frameWidth: 64,
       frameHeight: 64,
@@ -18,8 +22,10 @@ export default class StartScene extends Phaser.Scene {
   }
 
   create() {
+    music = this.sound.add("level_music");
+    music.play();
     const map = this.make.tilemap({ key: "map" });
-
+    isGameOver = false;
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
     const tileset = map.addTilesetImage("basictiles_og_scaled48", "tiles");
@@ -35,17 +41,18 @@ export default class StartScene extends Phaser.Scene {
     worldLayer.setCollisionByProperty({ collides: true });
 
     const camera = this.cameras.main;
-
     const spawnPoint = map.findObject(
       "Spawn",
       (obj) => obj.name === "Spawn Point"
     );
-
-
     this.player = new Player(this, spawnPoint.x, spawnPoint.y, camera);
 
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     camera.startFollow(this.player.sprite);
+
+    //watch for collisions
+    this.physics.add.collider(this.player.sprite, aboveLayer);
+    this.physics.add.collider(this.player.sprite, worldLayer);
     
     // adds enemy
     const enemySpawnPoint1 = map.findObject(
@@ -71,50 +78,81 @@ export default class StartScene extends Phaser.Scene {
     this.physics.add.collider(this.enemy1.sprite, worldLayer);
     this.physics.add.collider(this.enemy2.sprite, worldLayer);
     this.physics.add.collider(this.enemy3.sprite, worldLayer);
-    
 
-    //watch for collisions
-    this.physics.add.collider(this.player.sprite, aboveLayer);
-    this.physics.add.collider(this.player.sprite, worldLayer);
+    // how to play
+    this.addControlsText(this);
 
-    // collisions between player and enemy
-    this.physics.add.collider(this.player.sprite, this.enemy1.sprite);
-    this.physics.add.collider(this.player.sprite, this.enemy2.sprite);
-    this.physics.add.collider(this.player.sprite, this.enemy3.sprite);
-
-    //instructions text
-    this.add
-      .text(16, 16, "WASD to move, click to attack, spacebar to roll", {
-        font: "18px monospace",
-        fill: "#ffffff",
-        padding: { x: 20, y: 10 },
-      })
-      .setScrollFactor(0);
-
-    // const debugGraphics = this.add.graphics().setAlpha(0.75);
-    // worldLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
-    // belowLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
-    // aboveLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
-
-    
+    //debug graphics here
+    // this.showCollision(worldLayer, belowLayer, aboveLayer);
   }
 
   update(time, delta) {
+    if (this.player.stateMachine.state === "dead") {
+      //game over
+      this.gameOver();
+      return;
+    }
     this.player.update();
     this.enemy1.update();
     this.enemy2.update();
     this.enemy3.update();
+  }
+
+  gameOver() {
+    if (isGameOver) {
+      return;
+    }
+    music.stop();
+    isGameOver = true;
+    this.add
+      .text(384, 284, "GAME OVER", {
+        font: "18px monospace",
+        fill: "#ffffff",
+      })
+      .setScrollFactor(0);
+
+    this.time.addEvent({
+      delay: 5000,
+      callback: this.restartGame,
+      callbackScope: this,
+    });
+  }
+
+  restartGame() {
+    this.scene.start("title");
+  }
+
+  addControlsText(scene) {
+    scene.add
+      .text(
+        16,
+        16,
+        "WASD to move, Click to attack, Spacebar to roll, F to die and restart",
+        {
+          font: "18px monospace",
+          fill: "#ffffff",
+          padding: { x: 20, y: 10 },
+        }
+      )
+      .setScrollFactor(0);
+  }
+
+  showCollision(worldLayer, belowLayer, aboveLayer) {
+    const debugGraphics = this.add.graphics().setAlpha(0.75);
+    worldLayer.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    });
+    belowLayer.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    });
+    aboveLayer.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    });
   }
 }
