@@ -19,10 +19,10 @@ export default class SecondScene extends Phaser.Scene {
       frameHeight: 32,
     });
     // bossEnemy
-    this.load.spritesheet("boss", "assets/spritesheets/monsters.png", {
-      frameWidth: 85,
-      frameHeight: 84,
-    });
+    this.load.spritesheet("skeleton", "assets/spritesheets/monsters.png", {
+      frameWidth: 16,
+      frameHeight: 16,
+    });;
   }
 
   create() {

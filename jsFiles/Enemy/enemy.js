@@ -23,18 +23,18 @@ export default class Enemy {
     if (dir === 0) {
       // up
       this.sprite.body.setVelocity(0, -this.speed);
-      this.sprite.anims.play("spider-sit-idle");
+      this.sprite.anims.play("sit-idle");
     } else if (dir === 1) {
       // left
       this.sprite.body.setVelocity(-this.speed, 0);
-      this.sprite.anims.play("spider-sit-idle");
+      this.sprite.anims.play("sit-idle");
     } else if (dir === 2) {
       // down
       this.sprite.body.setVelocity(0, this.speed);
-      this.sprite.anims.play("spider-sit-idle");
+      this.sprite.anims.play("sit-idle");
     } else {
       this.sprite.body.setVelocity(this.speed, 0);
-      this.sprite.anims.play("spider-sit-idle");
+      this.sprite.anims.play("sit-idle");
     }
   }
 
@@ -48,9 +48,9 @@ export default class Enemy {
 
   update() {
     const sprite = this.sprite;
+    sprite.anims.play("sit-idle", true);
     const { speed } = this;
     const enemyBlocked = sprite.body.blocked;
-    this.sprite.anims.play("spider-sit-idle");
     if (
       enemyBlocked.down ||
       enemyBlocked.up ||
@@ -66,19 +66,19 @@ export default class Enemy {
 
       if (newDirection === "up") {
         this.sprite.body.setVelocity(0, -this.speed);
-        this.sprite.anims.play("spider-sit-idle");
+        this.sprite.anims.play("sit-idle");
       } else if (newDirection === "left") {
         this.sprite.body.setVelocity(-this.speed, 0);
-        this.sprite.anims.play("spider-sit-idle");
+        this.sprite.anims.play("sit-idle");
       } else if (newDirection === "down") {
         this.sprite.body.setVelocity(0, this.speed);
-        this.sprite.anims.play("spider-sit-idle");
+        this.sprite.anims.play("sit-idle");
       } else if (newDirection === "right") {
         this.sprite.body.setVelocity(0, -this.speed);
-        this.sprite.anims.play("spider-sit-idle");
+        this.sprite.anims.play("sit-idle");
       } else if (newDirection === "none") {
         this.sprite.body.setVelocity(0, this.speed);
-        this.sprite.anims.play("spider-sit-idle");
+        this.sprite.anims.play("sit-idle");
       }
     }
   }

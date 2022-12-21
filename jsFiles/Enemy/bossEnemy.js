@@ -4,13 +4,13 @@ export default class BossEnemy {
         const anims = scene.anims
         const movementFrames = 12;
         this.isDead = false
-        this.speed = 25;
+        this.speed = 50;
 
         anims.create({
             key: "boss-sit-idle",
-            frames: anims.generateFrameNumbers("boss",
+            frames: anims.generateFrameNumbers("skeleton",
                 {
-                    start: 1, end: 1
+                    start: 28, end: 28
                 }),
             repeat: -1,
             frameRate: movementFrames,
@@ -18,9 +18,9 @@ export default class BossEnemy {
 
         anims.create({
             key: "boss-walk-left",
-            frames: anims.generateFrameNumbers("boss",
+            frames: anims.generateFrameNumbers("skeleton",
                 {
-                    start: 1, end: 1
+                    start: 30, end: 32
                 }),
             repeat: -1,
             frameRate: movementFrames,
@@ -28,9 +28,9 @@ export default class BossEnemy {
 
         anims.create({
             key: "boss-walk-right",
-            frames: anims.generateFrameNumbers("boss",
+            frames: anims.generateFrameNumbers("skeleton",
                 {
-                    start: 1, end: 1
+                    start: 34, end: 36
                 }),
             repeat: -1,
             frameRate: movementFrames,
@@ -38,9 +38,9 @@ export default class BossEnemy {
 
         anims.create({
             key: "boss-walk-down",
-            frames: anims.generateFrameNumbers("boss",
+            frames: anims.generateFrameNumbers("skeleton",
                 {
-                    start: 1, end: 1
+                    start: 27, end: 29
                 }),
             repeat: -1,
             frameRate: movementFrames,
@@ -48,15 +48,15 @@ export default class BossEnemy {
 
         anims.create({
             key: "boss-walk-up",
-            frames: anims.generateFrameNumbers("boss",
+            frames: anims.generateFrameNumbers("skeleton",
                 {
-                    start: 1, end: 1
+                    start: 30, end: 32
                 }),
             repeat: -1,
             frameRate: movementFrames,
         });
 
-        this.sprite = scene.physics.add.sprite(x, y, "boss").setScale(4);
+        this.sprite = scene.physics.add.sprite(x, y, "skeleton").setScale(8);
 
         let dir = Math.floor(Math.random() * 4)
         console.log(dir);
@@ -108,15 +108,15 @@ export default class BossEnemy {
                 this.sprite.body.setVelocity(0, -this.speed)
                 this.sprite.anims.play("boss-walk-right")
 
-            } else if (newDirection === 'none') {
+            } else if(newDirection === 'none'){
                 this.sprite.body.setVelocity(0, this.speed);
                 this.sprite.anims.play("boss-walk-right")
             }
         }
     }
 
-    explode() {
-        if (!this.isDead) {
+    explode(){
+        if (!this.isDead){
             this.isDead = true
             this.sprite.destroy()
         }
