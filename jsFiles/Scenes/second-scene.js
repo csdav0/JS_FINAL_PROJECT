@@ -1,4 +1,5 @@
 import Player from "../Player/player.js";
+import BossEnemy from "../Enemy/bossEnemy.js";
 
 let music;
 export default class SecondScene extends Phaser.Scene {
@@ -16,6 +17,11 @@ export default class SecondScene extends Phaser.Scene {
     this.load.spritesheet("knight", "assets/spritesheets/32bit-knight.png", {
       frameWidth: 32,
       frameHeight: 32,
+    });
+    // bossEnemy
+    this.load.spritesheet("boss", "assets/spritesheets/monsters.png", {
+      frameWidth: 85,
+      frameHeight: 84,
     });
   }
 
@@ -49,6 +55,19 @@ export default class SecondScene extends Phaser.Scene {
     this.physics.add.collider(this.player.sprite, belowLayer);
     this.physics.add.collider(this.player.sprite, worldLayer);
 
+    // adds boss enemy
+    const bossSpawnPoint = map.findObject(
+      "BossSpawn",
+      (obj) => obj.name === "bossSpawn"
+    );
+
+    this.bossSpawn = new BossEnemy(this, bossSpawnPoint.x, bossSpawnPoint.y);
+
+    // bossEnemy collisions
+    this.physics.add.collider(this.bossSpawn.sprite, worldLayer);
+    this.physics.add.collider(this.bossSpawn.sprite, aboveLayer);
+  
+
     //instructions text
     this.add
       .text(16, 16, "WASD to move, click to attack, spacebar to roll", {
@@ -78,6 +97,8 @@ export default class SecondScene extends Phaser.Scene {
 
   update(time, delta) {
     this.player.update();
+    this.bossSpawn.update();
+
   }
 
   setDebug(worldLayer, belowLayer) {

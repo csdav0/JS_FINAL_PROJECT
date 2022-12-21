@@ -1,5 +1,5 @@
 import Player from "../Player/player.js";
-import Enemy from "../enemy.js";
+import Enemy from "../Enemy/enemy.js";
 let isGameOver;
 let music;
 export default class StartScene extends Phaser.Scene {
