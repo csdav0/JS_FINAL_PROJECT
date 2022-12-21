@@ -3,15 +3,14 @@
 ## Table of Contents
 
 1. [Project Description](#Project-Description)
-2. [Project Setup](#Project-Setup)
-3. [Team Members](#Team-members)
-4. [User Stories](#User-Stories)
-5. [Stretch Goals](#Stretch-Goals)
-6. [Presentation Link](#Presentation-Link)
+2. [Team Members](#Team-members)
+3. [User Stories](#User-Stories)
+4. [Stretch Goals](#Stretch-Goals)
+5. [Presentation Link](#Presentation-Link)
 
 ## Project Description
 
-- 2D Dungeon crawler that you can play in the broswer, inspired by retro Zelda games. Built using the Phaser Framework and Vanilla Javascript from 16 December 2022 - 21 December 2022.
+- 2D top-down Dungeon crawler that you can play in the browser, inspired by retro Zelda games. Built using the Phaser Framework and Vanilla Javascript from 16 December 2022 - 21 December 2022.
 
 ## Team Members
 
