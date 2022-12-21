@@ -1,14 +1,13 @@
 import Player from "./player.js";
 
-export default class StartScene extends Phaser.Scene {
+export default class SecondScene extends Phaser.Scene {
   constructor() {
-    super("start");
+    super("second-scene");
   }
 
   preload() {
     this.load.image("tiles", "assets/basictiles_og_scaled48.png");
-    this.load.image("tiles2", "assets/things_og_scaled48.png");
-    this.load.tilemapTiledJSON("map", "assets/tilemaps/startScene.json");
+    this.load.tilemapTiledJSON("map", "assets/tilemaps/secondScene.json");
     this.load.spritesheet("knight", "assets/spritesheets/32bit-knight.png", {
       frameWidth: 32,
       frameHeight: 32,
@@ -19,33 +18,29 @@ export default class StartScene extends Phaser.Scene {
     this.hasPlayerReachedStairs = false;
     const map = this.make.tilemap({ key: "map" });
 
-    // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
-    // Phaser's cache (i.e. the name you used in preload)
     const tileset = map.addTilesetImage("basictiles_og_scaled48", "tiles");
-    const tileset2 = map.addTilesetImage("things_og_scaled48", "tiles2");
 
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     const belowLayer = map.createLayer("Ground Layer", tileset, 0, 0);
     const worldLayer = map.createLayer("World Layer", tileset, 0, 0);
-    const worldLayer2 = map.createLayer("Lever Layer", tileset2, 0, 0);
-    const aboveLayer = map.createLayer("Top Layer", tileset, 0, 0);
+    // const aboveLayer = map.createLayer("Top Layer", tileset, 0, 0);
 
-    aboveLayer.setCollisionByProperty({ collides: true });
+    // aboveLayer.setCollisionByProperty({ collides: true });
     worldLayer.setCollisionByProperty({ collides: true });
 
     const camera = this.cameras.main;
 
-    const spawnPoint = map.findObject(
-      "Spawn",
-      (obj) => obj.name === "Spawn Point"
-    );
-    this.player = new Player(this, spawnPoint.x, spawnPoint.y, camera);
+    // const newSpawn = map.findObject(
+    //   "PlayerSpawn",
+    //   (obj) => obj.name === "playerSpawn"
+    // );
+    this.player = new Player(this, 6, 33, camera);
 
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     camera.startFollow(this.player.sprite);
 
     //watch for collisions
-    this.physics.add.collider(this.player.sprite, aboveLayer);
+    // this.physics.add.collider(this.player.sprite, aboveLayer);
     this.physics.add.collider(this.player.sprite, worldLayer);
 
     //instructions text
@@ -57,17 +52,17 @@ export default class StartScene extends Phaser.Scene {
       })
       .setScrollFactor(0);
 
-    worldLayer.setTileLocationCallback(23, 32, 48, 48, () => {
-      worldLayer.setTileLocationCallback(23, 32, 48, 48, null);
-      this.hasPlayerReachedStairs = true;
-      // this.player.freeze();
-      const camera = this.cameras.main;
-      camera.fade(250, 0, 0, 0);
-      camera.once("camerafadeoutcomplete", () => {
-        // this.player.destroy();
-        this.descendToBoss();
-      });
-    });
+    // this.worldLayer.setTileLocationCallback(23, 32, 48, 48, () => {
+    //   this.worldLayer.setTileLocationCallback(6, 33, 48, 48, null);
+    //   this.hasPlayerReachedStairs = true;
+    //   this.player.freeze();
+    //   const camera = this.cameras.main;
+    //   camera.fade(250, 0, 0, 0);
+    //   camera.once("camerafadeoutcomplete", () => {
+    //     this.player.destroy();
+    //     this.ascendScene();
+    //   });
+    // });
 
     // const debugGraphics = this.add.graphics().setAlpha(0.75);
     // worldLayer.renderDebug(debugGraphics, {
@@ -87,9 +82,9 @@ export default class StartScene extends Phaser.Scene {
     // });
   }
 
-  descendToBoss() {
-    this.scene.start("second-scene");
-  }
+  //   ascendScene() {
+  //     this.scene.start("startScene");
+  //   }
 
   update(time, delta) {
     this.player.update();
