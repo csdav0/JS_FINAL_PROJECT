@@ -20,7 +20,7 @@ export default class BossEnemy {
             key: "boss-walk-left",
             frames: anims.generateFrameNumbers("skeleton",
                 {
-                    start: 30, end: 32
+                    start: 32, end: 33
                 }),
             repeat: -1,
             frameRate: movementFrames,
@@ -50,7 +50,7 @@ export default class BossEnemy {
             key: "boss-walk-up",
             frames: anims.generateFrameNumbers("skeleton",
                 {
-                    start: 30, end: 32
+                    start: 37, end: 38
                 }),
             repeat: -1,
             frameRate: movementFrames,
