@@ -10,7 +10,7 @@ export default class StartScene extends Phaser.Scene {
     this.load.audio("level_music", "assets/audio/Alone.mp3");
     this.load.image("tiles", "assets/tilesets/basictiles_og_scaled48.png");
     this.load.image("tiles2", "assets/tilesets/things_og_scaled48.png");
-    this.load.tilemapTiledJSON("map", "assets/tilemaps/startScene.json");
+    this.load.tilemapTiledJSON("firstLevel", "assets/tilemaps/startScene.json");
     this.load.spritesheet("knight", "assets/spritesheets/32bit-knight.png", {
       frameWidth: 32,
       frameHeight: 32,
@@ -24,7 +24,7 @@ export default class StartScene extends Phaser.Scene {
   create() {
     music = this.sound.add("level_music");
     music.play();
-    const map = this.make.tilemap({ key: "map" });
+    const map = this.make.tilemap({ key: "firstLevel" });
     isGameOver = false;
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
@@ -45,7 +45,7 @@ export default class StartScene extends Phaser.Scene {
       "Spawn",
       (obj) => obj.name === "Spawn Point"
     );
-    this.player = new Player(this, spawnPoint.x, spawnPoint.y, camera);
+    this.player = new Player(this, 1048, 1555, camera);
 
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     camera.startFollow(this.player.sprite);
@@ -88,11 +88,9 @@ export default class StartScene extends Phaser.Scene {
     worldLayer.setTileLocationCallback(23, 32, 48, 48, () => {
       worldLayer.setTileLocationCallback(23, 32, 48, 48, null);
       this.hasPlayerReachedStairs = true;
-      // this.player.freeze();
       const camera = this.cameras.main;
       camera.fade(250, 0, 0, 0);
       camera.once("camerafadeoutcomplete", () => {
-        // this.player.destroy();
         this.descendToBoss();
       });
     });
@@ -111,7 +109,7 @@ export default class StartScene extends Phaser.Scene {
   }
 
   descendToBoss() {
-    this.scene.start("second-scene");
+    this.scene.start("second");
   }
 
   gameOver() {
