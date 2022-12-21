@@ -167,7 +167,6 @@ export default class DungeonScene extends Phaser.Scene {
 
     remainderRooms.forEach((room) => {
       let randomizer = Math.random();
-
       if (randomizer <= 0.99) {
         const enemyPositionX = map.tileToWorldX(room.centerX);
         const enemyPositionY = map.tileToWorldY(room.centerY);
